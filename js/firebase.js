@@ -52,7 +52,7 @@ googleProvider.setCustomParameters({
 // Change this to YOUR Google email address
 // Only this email can access admin.html
 // ============================================================
-var ADMIN_EMAIL = "youremail@gmail.com"; // ⚠️ CHANGE THIS
+var ADMIN_EMAIL = "mmohithvikram@gmail.com"; // ⚠️ CHANGE THIS
 
 // ============================================================
 // EMAILJS CONFIG
