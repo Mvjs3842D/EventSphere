@@ -489,19 +489,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // ---- LOADING SCREEN ----
-    const loadingScreen = document.getElementById('loading-screen');
-    if (loadingScreen) {
-        // Hide loading screen after page loads
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                loadingScreen.classList.add('fade-out');
-                // Remove from DOM after animation
-                setTimeout(() => {
-                    loadingScreen.remove();
-                }, 600);
-            }, 500);
-        });
-    }
-    
 });
