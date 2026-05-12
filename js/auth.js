@@ -151,35 +151,28 @@ function protectPage() {
  * 
  * @param {Object} firebaseUser - Firebase user object from auth
  */
-async function saveUserToDatabase(firebaseUser) {
-    try {
-        // Reference to this user's document in Firestore
-        // Document ID = user's unique Firebase UID
-        const userRef = db.collection(COLLECTIONS.users).doc(firebaseUser.uid);
-        
-        // Data to save
-        // We only save basic info - don't overwrite user-added fields
-        const userData = {
-            uid: firebaseUser.uid,
-            name: firebaseUser.displayName || "Anonymous User",
-            email: firebaseUser.email,
-            profileImage: firebaseUser.photoURL || "",
-            // Set login timestamp
-            lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-            // Only set createdAt if this is first time (using set with merge)
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        
-        // set() with merge: true = update if exists, create if not
-        // This preserves existing fields like phone, bio
-        await userRef.set(userData, { merge: true });
-        
-        console.log("✅ User saved to Firestore:", firebaseUser.email);
-        
-    } catch (error) {
-        // Don't show error to user - this is background operation
-        console.error("❌ Error saving user to database:", error);
-    }
+// ✅ FIXED - uses .then() instead
+function saveUserToDatabase(firebaseUser) {
+    var userRef = firebase.firestore()
+        .collection(COLLECTIONS.users)
+        .doc(firebaseUser.uid);
+
+    var userData = {
+        uid: firebaseUser.uid,
+        name: firebaseUser.displayName || "Anonymous User",
+        email: firebaseUser.email,
+        profileImage: firebaseUser.photoURL || "",
+        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    userRef.set(userData, { merge: true })
+        .then(function () {
+            console.log("✅ User saved to Firestore:", firebaseUser.email);
+        })
+        .catch(function (error) {
+            console.error("❌ Error saving user:", error);
+        });
 }
 
 
@@ -193,47 +186,46 @@ async function saveUserToDatabase(firebaseUser) {
  * This opens a Google sign-in popup window
  * After success, onAuthStateChanged fires automatically
  */
-async function signInWithGoogle() {
-    try {
-        // Show loading state on button
-        setLoginButtonLoading(true);
-        
-        // Open Google sign-in popup
-        // Firebase handles everything - we just wait for result
-        const result = await auth.signInWithPopup(googleProvider);
-        
-        // Get user from result
-        const user = result.user;
-        console.log("✅ Google sign-in successful:", user.email);
-        
-        // Show success message
-        showAuthSuccess("Login successful! Redirecting...");
-        
-        // Wait a moment then redirect to dashboard
-        setTimeout(() => {
-            // Check if there's a saved redirect URL
-            const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-            
-            if (redirectUrl) {
-                // Clear the saved redirect
-                sessionStorage.removeItem('redirectAfterLogin');
-                // Go to where they were trying to go
-                window.location.href = redirectUrl;
-            } else {
-                // Default redirect to dashboard
-                window.location.href = 'dashboard.html';
-            }
-        }, 1500);
-        
-    } catch (error) {
-        console.error("❌ Google sign-in error:", error);
-        
-        // Reset loading state
-        setLoginButtonLoading(false);
-        
-        // Show user-friendly error message
-        handleAuthError(error);
-    }
+// ✅ FIXED CODE
+function signInWithGoogle() {
+
+    // Show loading state on button
+    setLoginButtonLoading(true);
+
+    // Create a fresh provider instance each time
+    var provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+
+    // Use firebase.auth() directly instead of the var
+    firebase.auth().signInWithPopup(provider)
+        .then(function (result) {
+
+            var user = result.user;
+            console.log("✅ Google sign-in successful:", user.email);
+
+            // Save user to Firestore
+            saveUserToDatabase(user);
+
+            // Show success message
+            showAuthSuccess("Login successful! Redirecting...");
+
+            // Redirect after short delay
+            setTimeout(function () {
+                var redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+                if (redirectUrl) {
+                    sessionStorage.removeItem('redirectAfterLogin');
+                    window.location.href = redirectUrl;
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+            }, 1500);
+
+        })
+        .catch(function (error) {
+            console.error("❌ Google sign-in error:", error);
+            setLoginButtonLoading(false);
+            handleAuthError(error);
+        });
 }
 
 
