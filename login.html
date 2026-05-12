@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EventSphere</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-body">
+
+    <!-- Floating background particles -->
+    <div id="particles-container" class="particles-container"></div>
+
+    <!-- ============================================
+         ANIMATED BACKGROUND
+         Multiple gradient blobs for visual effect
+         ============================================ -->
+    <div class="auth-background">
+        <div class="auth-blob blob-1"></div>
+        <div class="auth-blob blob-2"></div>
+        <div class="auth-blob blob-3"></div>
+    </div>
+
+    <!-- ============================================
+         LOGIN PAGE LAYOUT
+         Two columns: left side visual, right side form
+         ============================================ -->
+    <div class="auth-container">
+
+        <!-- LEFT SIDE - Visual/Branding Section -->
+        <div class="auth-left">
+            
+            <!-- Logo at top -->
+            <div class="auth-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">EventSphere</span>
+            </div>
+
+            <!-- Main visual content -->
+            <div class="auth-visual-content">
+                <h2 class="auth-left-title">
+                    Welcome to the 
+                    <span class="gradient-text">Future of Events</span>
+                </h2>
+                <p class="auth-left-subtitle">
+                    Join thousands of event organizers and attendees 
+                    who trust EventSphere for seamless event management.
+                </p>
+
+                <!-- Feature highlights on left side -->
+                <div class="auth-features">
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">🎉</div>
+                        <div>
+                            <strong>500+ Events</strong>
+                            <p>Discover amazing events near you</p>
+                        </div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">⚡</div>
+                        <div>
+                            <strong>Instant Registration</strong>
+                            <p>One click to secure your spot</p>
+                        </div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="auth-feature-icon">📧</div>
+                        <div>
+                            <strong>Email Confirmation</strong>
+                            <p>Automatic confirmation emails</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Floating glassmorphism card on left -->
+            <div class="auth-floating-card">
+                <div class="floating-card-avatar">👤</div>
+                <div class="floating-card-info">
+                    <strong>Sarah just registered!</strong>
+                    <span>Tech Summit 2025 · 2 min ago</span>
+                </div>
+                <div class="floating-card-badge">✓</div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE - Login Form Section -->
+        <div class="auth-right">
+            
+            <!-- Login Card -->
+            <div class="login-card">
+                
+                <!-- Card Header -->
+                <div class="login-header">
+                    <h1>Sign In</h1>
+                    <p>Access your EventSphere account</p>
+                </div>
+
+                <!-- ============================================
+                     ERROR MESSAGE BOX
+                     Shows if login fails
+                     Hidden by default (class "hidden")
+                     ============================================ -->
+                <div class="auth-error hidden" id="auth-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="error-message">Something went wrong. Please try again.</span>
+                </div>
+
+                <!-- ============================================
+                     SUCCESS MESSAGE BOX  
+                     Shows when login succeeds
+                     ============================================ -->
+                <div class="auth-success hidden" id="auth-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Login successful! Redirecting...</span>
+                </div>
+
+                <!-- ============================================
+                     GOOGLE LOGIN BUTTON
+                     Main login method using Firebase Auth
+                     ============================================ -->
+                <button class="btn-google-login" id="btn-google-login">
+                    
+                    <!-- Loading spinner (shows when logging in) -->
+                    <div class="btn-loader hidden" id="login-loader">
+                        <div class="mini-spinner"></div>
+                    </div>
+                    
+                    <!-- Google icon -->
+                    <img src="assets/icons/google-icon.svg" 
+                         alt="Google" 
+                         class="google-icon"
+                         onerror="this.innerHTML='G'"
+                         width="24">
+                    
+                    <span id="login-btn-text">Continue with Google</span>
+                    <span class="btn-glow"></span>
+                </button>
+
+                <!-- Divider line with text -->
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+
+                <!-- ============================================
+                     ALTERNATIVE LOGIN OPTIONS
+                     Email login (shows message about Google-only)
+                     ============================================ -->
+                <div class="email-login-info">
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>
+                            We use <strong>Google Sign-In</strong> for secure, 
+                            password-free authentication. Just click the button above!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Terms and Privacy notice -->
+                <p class="auth-terms">
+                    By continuing, you agree to our 
+                    <a href="#">Terms of Service</a> and 
+                    <a href="#">Privacy Policy</a>
+                </p>
+
+                <!-- Back to home link -->
+                <div class="auth-back">
+                    <a href="index.html">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Home
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Trust badges below login card -->
+            <div class="auth-trust-badges">
+                <div class="trust-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>256-bit SSL</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Firebase Secure</span>
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Privacy Protected</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Our scripts -->
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+
+</body>
+</html>

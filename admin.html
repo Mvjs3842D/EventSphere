@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - EventSphere</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for analytics charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body class="admin-body">
+
+    <!-- ============================================
+         ADMIN AUTH CHECK OVERLAY
+         Shows while we verify admin access
+         If user is not admin, they get blocked
+         ============================================ -->
+    <div id="admin-auth-check" class="admin-auth-check">
+        <div class="auth-check-content">
+            <div class="loader-spinner"></div>
+            <p>Verifying admin access...</p>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ACCESS DENIED SCREEN
+         Shows if non-admin tries to access
+         ============================================ -->
+    <div id="access-denied" class="access-denied hidden">
+        <div class="denied-content">
+            <div class="denied-icon">🔒</div>
+            <h2>Access Denied</h2>
+            <p>You don't have permission to access the admin panel.</p>
+            <a href="index.html" class="btn-primary">
+                <i class="fas fa-home"></i>
+                Go Home
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ADMIN PANEL (Shows only for admin users)
+         ============================================ -->
+    <div id="admin-panel" class="admin-panel hidden">
+
+        <!-- ============================================
+             ADMIN SIDEBAR
+             ============================================ -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            
+            <!-- Sidebar Logo -->
+            <div class="admin-sidebar-logo">
+                <span class="logo-icon">⚡</span>
+                <span>EventSphere</span>
+                <span class="admin-badge-small">Admin</span>
+            </div>
+
+            <!-- Admin Info -->
+            <div class="admin-info">
+                <img id="admin-avatar" 
+                     src="assets/icons/default-avatar.png" 
+                     alt="Admin" 
+                     class="admin-avatar">
+                <div class="admin-details">
+                    <span id="admin-name">Admin</span>
+                    <span class="admin-role">
+                        <i class="fas fa-shield-alt"></i> Administrator
+                    </span>
+                </div>
+            </div>
+
+            <!-- Admin Navigation Menu -->
+            <nav class="admin-nav">
+                <ul class="admin-menu">
+
+                    <!-- Dashboard Tab -->
+                    <li>
+                        <a href="#" class="admin-nav-link active" data-admin-tab="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- Add Event Tab -->
+                    <li>
+                        <a href="#" class="admin-nav-link" data-admin-tab="add-event">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add Event</span>
+                        </a>
+                    </li>
+
+                    <!-- Manage Events Tab -->
+                    <li>
+                        <a href="#" class="admin-nav-link" data-admin-tab="manage-events">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Manage Events</span>
+                            <span class="admin-nav-badge" id="events-nav-count">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Registrations Tab -->
+                    <li>
+                        <a href="#" class="admin-nav-link" data-admin-tab="registrations">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>Registrations</span>
+                            <span class="admin-nav-badge" id="reg-nav-count">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Users Tab -->
+                    <li>
+                        <a href="#" class="admin-nav-link" data-admin-tab="users">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                            <span class="admin-nav-badge" id="users-nav-count">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Analytics Tab -->
+                    <li>
+                        <a href="#" class="admin-nav-link" data-admin-tab="analytics">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+
+                    <!-- Divider -->
+                    <li class="admin-menu-divider"></li>
+
+                    <!-- View Website Link -->
+                    <li>
+                        <a href="index.html" class="admin-nav-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>View Website</span>
+                        </a>
+                    </li>
+
+                    <!-- Logout -->
+                    <li>
+                        <a href="#" class="admin-nav-link admin-logout" id="admin-logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+        </aside>
+
+        <!-- ============================================
+             ADMIN MAIN CONTENT AREA
+             ============================================ -->
+        <main class="admin-main">
+
+            <!-- Admin Top Bar -->
+            <header class="admin-topbar">
+                
+                <!-- Mobile sidebar toggle -->
+                <button class="admin-sidebar-toggle" id="admin-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Page title (changes with tabs) -->
+                <div class="admin-page-title">
+                    <h1 id="admin-page-title">Admin Dashboard</h1>
+                    <p id="admin-page-subtitle">Manage everything from here</p>
+                </div>
+
+                <!-- Topbar Right -->
+                <div class="admin-topbar-right">
+                    <!-- Real-time clock -->
+                    <div class="admin-clock" id="admin-clock">Loading...</div>
+                    
+                    <!-- Notification -->
+                    <button class="admin-notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="notif-badge" id="notif-count">0</span>
+                    </button>
+                </div>
+
+            </header>
+
+            <!-- ============================================
+                 ADMIN CONTENT AREA
+                 Each section is a "tab" that shows/hides
+                 ============================================ -->
+            <div class="admin-content">
+
+                <!-- ==========================================
+                     TAB 1: ADMIN DASHBOARD
+                     Overview stats and charts
+                     ========================================== -->
+                <div class="admin-tab active" id="admin-tab-dashboard">
+
+                    <!-- Welcome Banner -->
+                    <div class="admin-welcome">
+                        <div class="admin-welcome-text">
+                            <h2>Welcome back, <span id="admin-welcome-name">Admin</span>! 👋</h2>
+                            <p>Here's what's happening with EventSphere today</p>
+                        </div>
+                        <div class="admin-welcome-date" id="admin-welcome-date">Today</div>
+                    </div>
+
+                    <!-- ============================================
+                         KEY METRICS CARDS
+                         Numbers fetched from Firebase
+                         ============================================ -->
+                    <div class="admin-metrics-grid">
+
+                        <!-- Total Events -->
+                        <div class="metric-card blue">
+                            <div class="metric-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-number" id="metric-events">0</span>
+                                <span class="metric-label">Total Events</span>
+                                <span class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i> Active
+                                </span>
+                            </div>
+                            <div class="metric-bg-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+
+                        <!-- Total Users -->
+                        <div class="metric-card purple">
+                            <div class="metric-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-number" id="metric-users">0</span>
+                                <span class="metric-label">Total Users</span>
+                                <span class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i> Growing
+                                </span>
+                            </div>
+                            <div class="metric-bg-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+
+                        <!-- Total Registrations -->
+                        <div class="metric-card green">
+                            <div class="metric-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-number" id="metric-registrations">0</span>
+                                <span class="metric-label">Registrations</span>
+                                <span class="metric-change positive">
+                                    <i class="fas fa-arrow-up"></i> This Month
+                                </span>
+                            </div>
+                            <div class="metric-bg-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                        </div>
+
+                        <!-- Most Popular Event -->
+                        <div class="metric-card orange">
+                            <div class="metric-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="metric-info">
+                                <span class="metric-number small-text" id="metric-popular">Loading...</span>
+                                <span class="metric-label">Most Popular Event</span>
+                                <span class="metric-change">
+                                    <i class="fas fa-star"></i> Top Event
+                                </span>
+                            </div>
+                            <div class="metric-bg-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="charts-row">
+
+                        <!-- Registrations Chart -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3>Registrations Overview</h3>
+                                <select class="chart-period" id="chart-period">
+                                    <option value="week">Last 7 Days</option>
+                                    <option value="month">Last 30 Days</option>
+                                </select>
+                            </div>
+                            <!-- Canvas where Chart.js draws the chart -->
+                            <canvas id="registrations-chart" height="100"></canvas>
+                        </div>
+
+                        <!-- Category Distribution Donut Chart -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3>Events by Category</h3>
+                            </div>
+                            <canvas id="category-chart" height="100"></canvas>
+                        </div>
+
+                    </div>
+
+                    <!-- Recent Registrations Table -->
+                    <div class="admin-table-card">
+                        <div class="table-card-header">
+                            <h3>Recent Registrations</h3>
+                            <a href="#" class="table-link" data-admin-tab-link="registrations">View All</a>
+                        </div>
+                        <!-- Table filled by JavaScript -->
+                        <div class="table-wrapper">
+                            <table class="admin-table" id="recent-reg-table">
+                                <thead>
+                                    <tr>
+                                        <th>Registration ID</th>
+                                        <th>User</th>
+                                        <th>Event</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-reg-tbody">
+                                    <!-- Rows added by JavaScript -->
+                                    <tr>
+                                        <td colspan="5" class="table-loading">
+                                            <div class="mini-spinner"></div>
+                                            Loading registrations...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End dashboard tab -->
+
+                <!-- ==========================================
+                     TAB 2: ADD EVENT
+                     Form to create new events
+                     ========================================== -->
+                <div class="admin-tab hidden" id="admin-tab-add-event">
+
+                    <!-- Tab Header -->
+                    <div class="admin-tab-header">
+                        <h2>Add New Event</h2>
+                        <p>Create a new event and publish it to the platform</p>
+                    </div>
+
+                    <!-- ============================================
+                         EVENT CREATION FORM
+                         When submitted:
+                         1. Upload image to Firebase Storage
+                         2. Get image download URL
+                         3. Save all data to Firestore
+                         ============================================ -->
+                    <form id="add-event-form" class="admin-form">
+
+                        <div class="form-grid">
+
+                            <!-- Left Column -->
+                            <div class="form-column">
+
+                                <!-- Event Title -->
+                                <div class="form-group">
+                                    <label class="form-label" for="event-title-input">
+                                        <i class="fas fa-heading"></i>
+                                        Event Title *
+                                    </label>
+                                    <input type="text" 
+                                           id="event-title-input" 
+                                           class="form-input" 
+                                           placeholder="Enter event title"
+                                           required>
+                                </div>
+
+                                <!-- Event Description -->
+                                <div class="form-group">
+                                    <label class="form-label" for="event-desc-input">
+                                        <i class="fas fa-align-left"></i>
+                                        Description *
+                                    </label>
+                                    <textarea id="event-desc-input" 
+                                              class="form-textarea" 
+                                              placeholder="Describe your event in detail..."
+                                              rows="5"
+                                              required></textarea>
+                                    <!-- Character count -->
+                                    <span class="char-count" id="desc-char-count">0 characters</span>
+                                </div>
+
+                                <!-- Event Date and Time -->
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="event-date-input">
+                                            <i class="fas fa-calendar"></i>
+                                            Event Date *
+                                        </label>
+                                        <input type="date" 
+                                               id="event-date-input" 
+                                               class="form-input"
+                                               required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="event-time-input">
+                                            <i class="fas fa-clock"></i>
+                                            Event Time *
+                                        </label>
+                                        <input type="time" 
+                                               id="event-time-input" 
+                                               class="form-input"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <!-- Event Venue -->
+                                <div class="form-group">
+                                    <label class="form-label" for="event-venue-input">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Venue *
+                                    </label>
+                                    <input type="text" 
+                                           id="event-venue-input" 
+                                           class="form-input" 
+                                           placeholder="Event venue / location"
+                                           required>
+                                </div>
+
+                            </div>
+                            <!-- End left column -->
+
+                            <!-- Right Column -->
+                            <div class="form-column">
+
+                                <!-- Category Dropdown -->
+                                <div class="form-group">
+                                    <label class="form-label" for="event-category-input">
+                                        <i class="fas fa-tag"></i>
+                                        Category *
+                                    </label>
+                                    <select id="event-category-input" class="form-select" required>
+                                        <option value="">Select category...</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="music">Music</option>
+                                        <option value="sports">Sports</option>
+                                        <option value="art">Art & Culture</option>
+                                        <option value="business">Business</option>
+                                        <option value="education">Education</option>
+                                        <option value="food">Food & Drink</option>
+                                        <option value="health">Health & Wellness</option>
+                                        <option value="gaming">Gaming</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Organizer Name -->
+                                <div class="form-group">
+                                    <label class="form-label" for="event-organizer-input">
+                                        <i class="fas fa-user-tie"></i>
+                                        Organizer Name *
+                                    </label>
+                                    <input type="text" 
+                                           id="event-organizer-input" 
+                                           class="form-input" 
+                                           placeholder="Organizer or company name"
+                                           required>
+                                </div>
+
+                                <!-- Ticket Limit -->
+                                <div class="form-group">
+                                    <label class="form-label" for="event-limit-input">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        Ticket Limit *
+                                    </label>
+                                    <input type="number" 
+                                           id="event-limit-input" 
+                                           class="form-input" 
+                                           placeholder="Maximum attendees (e.g. 100)"
+                                           min="1"
+                                           required>
+                                </div>
+
+                                <!-- ============================================
+                                     EVENT IMAGE UPLOAD
+                                     Admin uploads image here
+                                     Image goes to Firebase Storage
+                                     URL saved to Firestore
+                                     ============================================ -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-image"></i>
+                                        Event Image *
+                                    </label>
+                                    
+                                    <!-- Custom upload area (prettier than default input) -->
+                                    <div class="image-upload-area" id="image-upload-area">
+                                        
+                                        <!-- Hidden actual file input -->
+                                        <input type="file" 
+                                               id="event-image-input" 
+                                               accept="image/*"
+                                               class="hidden-file-input">
+                                        
+                                        <!-- Preview (shown after image selected) -->
+                                        <div class="upload-preview hidden" id="upload-preview">
+                                            <img id="preview-img" src="" alt="Preview">
+                                            <button type="button" 
+                                                    class="remove-image-btn" 
+                                                    id="remove-image">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Upload placeholder (shown before image selected) -->
+                                        <div class="upload-placeholder" id="upload-placeholder">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>Click or drag image here</p>
+                                            <span>PNG, JPG, WEBP up to 5MB</span>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Upload progress bar (shows during upload) -->
+                                    <div class="upload-progress hidden" id="upload-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="upload-progress-fill" style="width: 0%"></div>
+                                        </div>
+                                        <span class="progress-text" id="upload-progress-text">Uploading 0%</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- End right column -->
+
+                        </div>
+                        <!-- End form grid -->
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            
+                            <!-- Reset / Cancel button -->
+                            <button type="button" class="btn-outline" id="reset-form">
+                                <i class="fas fa-redo"></i>
+                                Reset Form
+                            </button>
+                            
+                            <!-- Submit button -->
+                            <button type="submit" class="btn-primary" id="submit-event-btn">
+                                <!-- Loading state shows during submission -->
+                                <span class="btn-loader hidden" id="submit-loader">
+                                    <div class="mini-spinner"></div>
+                                </span>
+                                <i class="fas fa-plus-circle" id="submit-icon"></i>
+                                <span id="submit-btn-text">Publish Event</span>
+                                <span class="btn-glow"></span>
+                            </button>
+
+                        </div>
+
+                        <!-- Success / Error messages -->
+                        <div class="form-feedback hidden" id="event-form-feedback">
+                            <i class="fas fa-check-circle"></i>
+                            <span id="form-feedback-text">Event published successfully!</span>
+                        </div>
+
+                    </form>
+
+                </div>
+                <!-- End add event tab -->
+
+                <!-- ==========================================
+                     TAB 3: MANAGE EVENTS
+                     List all events with edit/delete options
+                     ========================================== -->
+                <div class="admin-tab hidden" id="admin-tab-manage-events">
+
+                    <!-- Tab Header -->
+                    <div class="admin-tab-header">
+                        <h2>Manage Events</h2>
+                        <p>Edit, update or delete events</p>
+                        
+                        <!-- Add event quick link -->
+                        <button class="btn-primary" onclick="switchAdminTab('add-event')">
+                            <i class="fas fa-plus"></i>
+                            Add New Event
+                        </button>
+                    </div>
+
+                    <!-- Search events in admin -->
+                    <div class="admin-search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" 
+                               id="admin-event-search" 
+                               placeholder="Search events..."
+                               class="admin-search-input">
+                    </div>
+
+                    <!-- ============================================
+                         EVENTS TABLE
+                         JavaScript fills this with all events from Firestore
+                         Each row has Edit and Delete buttons
+                         ============================================ -->
+                    <div class="admin-table-card">
+                        <div class="table-wrapper">
+                            <table class="admin-table" id="manage-events-table">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Venue</th>
+                                        <th>Registrations</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="manage-events-tbody">
+                                    <!-- Rows added by admin.js -->
+                                    <tr>
+                                        <td colspan="7" class="table-loading">
+                                            <div class="mini-spinner"></div>
+                                            Loading events...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End manage events tab -->
+
+                <!-- ==========================================
+                     TAB 4: REGISTRATIONS
+                     View all event registrations
+                     ========================================== -->
+                <div class="admin-tab hidden" id="admin-tab-registrations">
+
+                    <div class="admin-tab-header">
+                        <h2>Event Registrations</h2>
+                        <p>All user registrations across all events</p>
+                    </div>
+
+                    <!-- Filter by event -->
+                    <div class="registration-filters">
+                        <select class="form-select" id="filter-by-event">
+                            <option value="all">All Events</option>
+                            <!-- Options added by JavaScript -->
+                        </select>
+                        
+                        <!-- Export button -->
+                        <button class="btn-outline" id="export-registrations">
+                            <i class="fas fa-download"></i>
+                            Export CSV
+                        </button>
+                    </div>
+
+                    <!-- Registrations Table -->
+                    <div class="admin-table-card">
+                        <div class="table-wrapper">
+                            <table class="admin-table" id="registrations-table">
+                                <thead>
+                                    <tr>
+                                        <th>Reg. ID</th>
+                                        <th>User Email</th>
+                                        <th>Event Name</th>
+                                        <th>Registration Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="registrations-tbody">
+                                    <tr>
+                                        <td colspan="6" class="table-loading">
+                                            <div class="mini-spinner"></div>
+                                            Loading registrations...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End registrations tab -->
+
+                <!-- ==========================================
+                     TAB 5: USERS
+                     View all registered users
+                     ========================================== -->
+                <div class="admin-tab hidden" id="admin-tab-users">
+
+                    <div class="admin-tab-header">
+                        <h2>Registered Users</h2>
+                        <p>All users who have signed up on EventSphere</p>
+                    </div>
+
+                    <!-- Users Table -->
+                    <div class="admin-table-card">
+                        <div class="table-wrapper">
+                            <table class="admin-table" id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>Avatar</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Joined Date</th>
+                                        <th>Events Registered</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-tbody">
+                                    <tr>
+                                        <td colspan="6" class="table-loading">
+                                            <div class="mini-spinner"></div>
+                                            Loading users...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End users tab -->
+
+                <!-- ==========================================
+                     TAB 6: ANALYTICS
+                     Charts and detailed statistics
+                     ========================================== -->
+                <div class="admin-tab hidden" id="admin-tab-analytics">
+
+                    <div class="admin-tab-header">
+                        <h2>Analytics Dashboard</h2>
+                        <p>Detailed insights and statistics</p>
+                    </div>
+
+                    <!-- Analytics Stats Row -->
+                    <div class="analytics-stats-row">
+                        <div class="analytics-stat">
+                            <span class="analytics-stat-number" id="a-total-events">0</span>
+                            <span class="analytics-stat-label">Total Events</span>
+                        </div>
+                        <div class="analytics-stat">
+                            <span class="analytics-stat-number" id="a-total-users">0</span>
+                            <span class="analytics-stat-label">Total Users</span>
+                        </div>
+                        <div class="analytics-stat">
+                            <span class="analytics-stat-number" id="a-total-reg">0</span>
+                            <span class="analytics-stat-label">Total Registrations</span>
+                        </div>
+                        <div class="analytics-stat">
+                            <span class="analytics-stat-number" id="a-avg-reg">0</span>
+                            <span class="analytics-stat-label">Avg. Per Event</span>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="analytics-charts-grid">
+
+                        <!-- Popular Events Bar Chart -->
+                        <div class="chart-card large">
+                            <div class="chart-card-header">
+                                <h3>Most Popular Events</h3>
+                                <p>By number of registrations</p>
+                            </div>
+                            <canvas id="popular-events-chart" height="80"></canvas>
+                        </div>
+
+                        <!-- Category Pie Chart -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3>Category Distribution</h3>
+                            </div>
+                            <canvas id="analytics-category-chart" height="120"></canvas>
+                        </div>
+
+                        <!-- Monthly Growth Line Chart -->
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h3>User Growth</h3>
+                            </div>
+                            <canvas id="user-growth-chart" height="120"></canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- End analytics tab -->
+
+            </div>
+            <!-- End admin content -->
+
+        </main>
+        <!-- End admin main -->
+
+    </div>
+    <!-- End admin panel -->
+
+    <!-- ============================================
+         EDIT EVENT MODAL
+         Popup form to edit existing event
+         Shown when admin clicks "Edit" on an event
+         ============================================ -->
+    <div class="admin-modal hidden" id="edit-event-modal">
+        <div class="modal-overlay" id="edit-modal-overlay"></div>
+        <div class="modal-content large-modal">
+            
+            <div class="modal-header">
+                <h3>Edit Event</h3>
+                <button class="modal-close" id="close-edit-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Same form as add event but pre-filled with existing data -->
+            <form id="edit-event-form" class="admin-form">
+                
+                <!-- Hidden input to store event ID being edited -->
+                <input type="hidden" id="edit-event-id">
+
+                <div class="form-grid">
+
+                    <!-- Left Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Event Title *</label>
+                            <input type="text" id="edit-title" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description *</label>
+                            <textarea id="edit-desc" class="form-textarea" rows="4" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Date *</label>
+                                <input type="date" id="edit-date" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Time *</label>
+                                <input type="time" id="edit-time" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Venue *</label>
+                            <input type="text" id="edit-venue" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Category *</label>
+                            <select id="edit-category" class="form-select" required>
+                                <option value="technology">Technology</option>
+                                <option value="music">Music</option>
+                                <option value="sports">Sports</option>
+                                <option value="art">Art & Culture</option>
+                                <option value="business">Business</option>
+                                <option value="education">Education</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Organizer *</label>
+                            <input type="text" id="edit-organizer" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ticket Limit *</label>
+                            <input type="number" id="edit-limit" class="form-input" min="1" required>
+                        </div>
+                        
+                        <!-- Image update option -->
+                        <div class="form-group">
+                            <label class="form-label">Replace Image (optional)</label>
+                            <div class="image-upload-area" id="edit-image-upload-area">
+                                <input type="file" 
+                                       id="edit-image-input" 
+                                       accept="image/*"
+                                       class="hidden-file-input">
+                                <div class="upload-placeholder" id="edit-upload-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <p>Click to replace image</p>
+                                </div>
+                                <div class="upload-preview hidden" id="edit-upload-preview">
+                                    <img id="edit-preview-img" src="" alt="Preview">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn-outline" id="cancel-edit">Cancel</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ============================================
+         DELETE CONFIRMATION MODAL
+         Asks admin to confirm before deleting
+         ============================================ -->
+    <div class="admin-modal hidden" id="delete-confirm-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content small-modal">
+            
+            <div class="modal-header">
+                <h3>Delete Event</h3>
+                <button class="modal-close" id="close-delete-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="delete-modal-body">
+                <div class="delete-warning-icon">⚠️</div>
+                <p>Are you sure you want to delete:</p>
+                <!-- Event name shown here -->
+                <strong id="delete-event-name">Event Name</strong>
+                <p class="delete-warning-text">
+                    This action cannot be undone. All registrations for this event will also be affected.
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-outline" id="cancel-delete">Cancel</button>
+                <button class="btn-danger" id="confirm-delete">
+                    <i class="fas fa-trash"></i>
+                    Delete Event
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification (for quick messages) -->
+    <div class="toast-container" id="toast-container">
+        <!-- Toasts added by JavaScript -->
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Our Scripts -->
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- Admin specific logic -->
+    <script src="js/admin.js"></script>
+
+</body>
+</html>

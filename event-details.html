@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+        DYNAMIC TITLE
+        JavaScript will update this with actual event name 
+    -->
+    <title>Event Details - EventSphere</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">EventSphere</span>
+                </a>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="events.html" class="nav-link active">Events</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="login.html" class="btn-nav-login" id="btn-login-nav">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="dashboard.html" class="btn-nav-dashboard hidden" id="btn-dashboard-nav">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         PAGE LOADING STATE
+         Shows while JavaScript fetches event from Firebase
+         ============================================ -->
+    <div class="event-loading" id="event-loading">
+        <div class="loading-content">
+            <div class="loader-spinner large"></div>
+            <p>Loading event details...</p>
+        </div>
+    </div>
+
+    <!-- ============================================
+         ERROR STATE
+         Shows if event ID is invalid or not found
+         ============================================ -->
+    <div class="event-error hidden" id="event-error">
+        <div class="error-content">
+            <div class="error-icon">😕</div>
+            <h2>Event Not Found</h2>
+            <p>The event you're looking for doesn't exist or has been removed.</p>
+            <a href="events.html" class="btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Events
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================================
+         EVENT DETAILS CONTENT
+         This section is hidden until Firebase data loads
+         JavaScript fills all the fields marked with id=""
+         ============================================ -->
+    <div class="event-details-container hidden" id="event-details-container">
+
+        <!-- ============================================
+             EVENT HERO BANNER
+             Large banner with event image and basic info
+             ============================================ -->
+        <section class="event-banner">
+            
+            <!-- 
+                Background image set by JavaScript:
+                eventBanner.style.backgroundImage = `url(${event.imageURL})`
+            -->
+            <div class="event-banner-bg" id="event-banner-bg">
+                <div class="banner-overlay"></div>
+            </div>
+
+            <!-- Breadcrumb navigation -->
+            <div class="event-breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+                <a href="events.html">Events</a>
+                <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+                <span id="breadcrumb-event-name">Event Name</span>
+            </div>
+
+            <!-- Event Banner Content -->
+            <div class="event-banner-content container">
+                
+                <!-- Category Badge -->
+                <span class="event-category-badge large" id="event-category">Technology</span>
+                
+                <!-- Event Title - filled by JS from Firestore -->
+                <h1 class="event-banner-title" id="event-title">Loading Event Title...</h1>
+                
+                <!-- Quick Info Row -->
+                <div class="event-banner-meta">
+                    <div class="banner-meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <!-- Date filled by JavaScript -->
+                        <span id="event-date-banner">Loading date...</span>
+                    </div>
+                    <div class="banner-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <!-- Venue filled by JavaScript -->
+                        <span id="event-venue-banner">Loading venue...</span>
+                    </div>
+                    <div class="banner-meta-item">
+                        <i class="fas fa-user-tie"></i>
+                        <!-- Organizer filled by JavaScript -->
+                        <span id="event-organizer-banner">Loading organizer...</span>
+                    </div>
+                </div>
+
+                <!-- Scroll down hint -->
+                <div class="banner-scroll-hint">
+                    <span>Scroll for details</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ============================================
+             EVENT MAIN CONTENT
+             Two column layout: details + registration
+             ============================================ -->
+        <section class="event-content-section">
+            <div class="container">
+                <div class="event-content-layout">
+
+                    <!-- ---- LEFT COLUMN: Event Details ---- -->
+                    <div class="event-left-column">
+
+                        <!-- Event Image Card -->
+                        <div class="event-image-card">
+                            <!-- 
+                                Main event image
+                                src filled by JavaScript from Firebase Storage URL 
+                            -->
+                            <img id="event-main-image" 
+                                 src="" 
+                                 alt="Event Image" 
+                                 class="event-main-img">
+                        </div>
+
+                        <!-- Event Description -->
+                        <div class="event-section-card">
+                            <h2 class="event-section-title">
+                                <i class="fas fa-info-circle"></i>
+                                About This Event
+                            </h2>
+                            <!-- Description filled by JavaScript -->
+                            <p class="event-description" id="event-description">
+                                Loading description...
+                            </p>
+                        </div>
+
+                        <!-- Event Details Grid -->
+                        <div class="event-section-card">
+                            <h2 class="event-section-title">
+                                <i class="fas fa-list-ul"></i>
+                                Event Details
+                            </h2>
+                            
+                            <div class="event-details-grid">
+
+                                <!-- Date Detail -->
+                                <div class="event-detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="detail-info">
+                                        <span class="detail-label">Date & Time</span>
+                                        <span class="detail-value" id="event-date-detail">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Venue Detail -->
+                                <div class="event-detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="detail-info">
+                                        <span class="detail-label">Venue</span>
+                                        <span class="detail-value" id="event-venue-detail">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Organizer Detail -->
+                                <div class="event-detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="detail-info">
+                                        <span class="detail-label">Organizer</span>
+                                        <span class="detail-value" id="event-organizer-detail">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Category Detail -->
+                                <div class="event-detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-tag"></i>
+                                    </div>
+                                    <div class="detail-info">
+                                        <span class="detail-label">Category</span>
+                                        <span class="detail-value" id="event-category-detail">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Ticket Limit -->
+                                <div class="event-detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-ticket-alt"></i>
+                                    </div>
+                                    <div class="detail-info">
+                                        <span class="detail-label">Ticket Limit</span>
+                                        <span class="detail-value" id="event-ticket-limit">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <!-- Registrations Count -->
+                                <div class="event-detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="detail-info">
+                                        <span class="detail-label">Registered</span>
+                                        <span class="detail-value" id="event-registered-count">Loading...</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Share Section -->
+                        <div class="event-section-card">
+                            <h2 class="event-section-title">
+                                <i class="fas fa-share-alt"></i>
+                                Share This Event
+                            </h2>
+                            <div class="share-buttons">
+                                <button class="share-btn twitter" onclick="shareEvent('twitter')">
+                                    <i class="fab fa-twitter"></i> Twitter
+                                </button>
+                                <button class="share-btn facebook" onclick="shareEvent('facebook')">
+                                    <i class="fab fa-facebook"></i> Facebook
+                                </button>
+                                <button class="share-btn copy" onclick="copyEventLink()">
+                                    <i class="fas fa-copy"></i> Copy Link
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- End left column -->
+
+                    <!-- ---- RIGHT COLUMN: Registration + Countdown ---- -->
+                    <div class="event-right-column">
+
+                        <!-- ============================================
+                             STICKY REGISTRATION CARD
+                             Stays in view while user scrolls
+                             ============================================ -->
+                        <div class="registration-card sticky-card">
+                            
+                            <!-- Card Header -->
+                            <div class="reg-card-header">
+                                <h3>Register for This Event</h3>
+                                <p>Secure your spot today</p>
+                            </div>
+
+                            <!-- ============================================
+                                 COUNTDOWN TIMER
+                                 Shows time remaining until event
+                                 JavaScript updates every second
+                                 ============================================ -->
+                            <div class="countdown-timer" id="countdown-timer">
+                                <p class="countdown-label">Event Starts In:</p>
+                                <div class="countdown-grid">
+                                    <div class="countdown-box">
+                                        <span class="countdown-number" id="days">00</span>
+                                        <span class="countdown-unit">Days</span>
+                                    </div>
+                                    <div class="countdown-separator">:</div>
+                                    <div class="countdown-box">
+                                        <span class="countdown-number" id="hours">00</span>
+                                        <span class="countdown-unit">Hours</span>
+                                    </div>
+                                    <div class="countdown-separator">:</div>
+                                    <div class="countdown-box">
+                                        <span class="countdown-number" id="minutes">00</span>
+                                        <span class="countdown-unit">Mins</span>
+                                    </div>
+                                    <div class="countdown-separator">:</div>
+                                    <div class="countdown-box">
+                                        <span class="countdown-number" id="seconds">00</span>
+                                        <span class="countdown-unit">Secs</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ticket Availability Bar -->
+                            <div class="availability-bar">
+                                <div class="avail-label">
+                                    <span>Tickets Available</span>
+                                    <span id="avail-percentage">Loading...</span>
+                                </div>
+                                <div class="avail-progress">
+                                    <div class="avail-fill" id="avail-fill" style="width: 0%"></div>
+                                </div>
+                                <p class="avail-note" id="avail-note">Loading...</p>
+                            </div>
+
+                            <!-- ============================================
+                                 REGISTRATION BUTTON STATES
+                                 Different buttons shown based on:
+                                 1. User not logged in
+                                 2. User logged in, not registered
+                                 3. User already registered
+                                 4. Event is full
+                                 ============================================ -->
+
+                            <!-- State 1: Not logged in -->
+                            <a href="login.html" class="btn-primary full-width" id="btn-login-to-register">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Login to Register
+                            </a>
+
+                            <!-- State 2: Logged in, can register -->
+                            <button class="btn-primary full-width hidden" 
+                                    id="btn-register-event">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span id="register-btn-text">Register Now</span>
+                                <span class="btn-glow"></span>
+                            </button>
+
+                            <!-- State 3: Already registered -->
+                            <div class="already-registered hidden" id="already-registered">
+                                <div class="registered-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                    <strong>You're Registered!</strong>
+                                </div>
+                                <p class="reg-id-display">
+                                    Registration ID: 
+                                    <code id="user-reg-id">Loading...</code>
+                                </p>
+                            </div>
+
+                            <!-- State 4: Event Full -->
+                            <button class="btn-disabled full-width hidden" id="btn-event-full" disabled>
+                                <i class="fas fa-times-circle"></i>
+                                Event is Full
+                            </button>
+
+                            <!-- Trust note -->
+                            <div class="reg-trust">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Confirmation email sent automatically</span>
+                            </div>
+
+                        </div>
+                        <!-- End registration card -->
+
+                        <!-- Organizer Info Card -->
+                        <div class="organizer-card">
+                            <h3>
+                                <i class="fas fa-user-circle"></i>
+                                Organizer
+                            </h3>
+                            <div class="organizer-info">
+                                <div class="organizer-avatar">🏢</div>
+                                <div>
+                                    <strong id="organizer-name-card">Loading...</strong>
+                                    <p>Event Organizer</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Back to Events Link -->
+                        <a href="events.html" class="btn-outline full-width back-btn">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to All Events
+                        </a>
+
+                    </div>
+                    <!-- End right column -->
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <!-- End event-details-container -->
+
+    <!-- ============================================
+         REGISTRATION SUCCESS POPUP/MODAL
+         Shows after successful registration
+         Animated popup with registration details
+         ============================================ -->
+    <div class="success-modal hidden" id="success-modal">
+        <div class="success-modal-overlay" id="modal-overlay"></div>
+        <div class="success-modal-content">
+            
+            <!-- Animated checkmark -->
+            <div class="success-animation">
+                <div class="success-circle">
+                    <i class="fas fa-check success-check"></i>
+                </div>
+                <!-- Confetti particles added by JS -->
+                <div class="confetti-container" id="confetti"></div>
+            </div>
+
+            <h2>Registration Successful! 🎉</h2>
+            <p>You have successfully registered for:</p>
+            
+            <!-- Event name shown in popup -->
+            <div class="success-event-name" id="success-event-name">
+                Event Name
+            </div>
+
+            <!-- Registration ID -->
+            <div class="success-reg-id">
+                <span>Registration ID:</span>
+                <code id="success-reg-id">REG-XXXXXXXX</code>
+                <button onclick="copyRegId()" class="copy-btn" title="Copy ID">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+
+            <!-- Email confirmation note -->
+            <div class="success-email-note">
+                <i class="fas fa-envelope"></i>
+                <p>A confirmation email has been sent to your email address.</p>
+            </div>
+
+            <!-- Action buttons in popup -->
+            <div class="success-buttons">
+                <a href="dashboard.html" class="btn-primary">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Go to Dashboard
+                </a>
+                <button class="btn-outline" id="close-success-modal">
+                    <i class="fas fa-times"></i>
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- EmailJS SDK for sending confirmation emails -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Our Scripts -->
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- Event details specific script - loads single event by ID -->
+    <script src="js/event-details.js"></script>
+
+</body>
+</html>

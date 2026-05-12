@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic HTML meta tags - tells browser about our page -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventSphere - Smart Event Management Platform</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+    
+    <!-- Google Fonts - Poppins and Inter for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Our main CSS file -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============================================
+         LOADING SCREEN
+         Shows when page is loading
+         ============================================ -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-container">
+            <!-- Animated logo for loading -->
+            <div class="loader-logo">
+                <span class="loader-icon">⚡</span>
+                <span class="loader-text">EventSphere</span>
+            </div>
+            <!-- Spinning circle animation -->
+            <div class="loader-spinner"></div>
+            <p class="loader-subtitle">Loading amazing events...</p>
+        </div>
+    </div>
+
+    <!-- ============================================
+         PARTICLES BACKGROUND
+         JavaScript will create floating dots here
+         ============================================ -->
+    <div id="particles-container" class="particles-container"></div>
+
+    <!-- ============================================
+         NAVIGATION BAR
+         Top navigation - transparent with blur effect
+         ============================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            
+            <!-- Logo Section -->
+            <div class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">EventSphere</span>
+            </div>
+
+            <!-- Desktop Navigation Links -->
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="events.html" class="nav-link">Events</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#stats" class="nav-link">Stats</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <!-- This button shows when user is NOT logged in -->
+                <a href="login.html" class="btn-nav-login" id="btn-login-nav">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </a>
+                
+                <!-- This button shows when user IS logged in (hidden by default) -->
+                <a href="dashboard.html" class="btn-nav-dashboard hidden" id="btn-dashboard-nav">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Menu Button -->
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- ============================================
+         HERO SECTION
+         Main banner section of landing page
+         ============================================ -->
+    <section class="hero" id="home">
+        
+        <!-- Animated gradient background blobs -->
+        <div class="hero-bg">
+            <div class="gradient-blob blob-1"></div>
+            <div class="gradient-blob blob-2"></div>
+            <div class="gradient-blob blob-3"></div>
+        </div>
+
+        <div class="hero-container">
+            
+            <!-- Left side - Text content -->
+            <div class="hero-content">
+                
+                <!-- Small badge above title -->
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>🚀 Next Generation Event Platform</span>
+                </div>
+
+                <!-- Main headline -->
+                <h1 class="hero-title">
+                    Smart Event
+                    <span class="gradient-text">Management</span>
+                    Platform
+                </h1>
+
+                <!-- Subtitle description -->
+                <p class="hero-subtitle">
+                    Create, manage and experience events smarter. 
+                    Connect with thousands of attendees and make every event unforgettable.
+                </p>
+
+                <!-- Hero Action Buttons -->
+                <div class="hero-buttons">
+                    <!-- Primary button - explore events -->
+                    <a href="events.html" class="btn-primary">
+                        <i class="fas fa-calendar-alt"></i>
+                        Explore Events
+                        <span class="btn-glow"></span>
+                    </a>
+                    
+                    <!-- Secondary button - login -->
+                    <a href="login.html" class="btn-secondary">
+                        <i class="fas fa-user-plus"></i>
+                        Get Started Free
+                    </a>
+                </div>
+
+                <!-- Trust indicators -->
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure & Reliable</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Lightning Fast</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-heart"></i>
+                        <span>Loved by 10K+ Users</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right side - Floating glassmorphism cards -->
+            <div class="hero-visual">
+                
+                <!-- Main floating card -->
+                <div class="hero-card main-card">
+                    <div class="card-header">
+                        <div class="card-avatar">🎭</div>
+                        <div class="card-info">
+                            <h4>Tech Summit 2025</h4>
+                            <p>San Francisco, CA</p>
+                        </div>
+                        <span class="card-status live">LIVE</span>
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <span class="stat-number">2.4K</span>
+                            <span class="stat-label">Attendees</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">48</span>
+                            <span class="stat-label">Speakers</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">3</span>
+                            <span class="stat-label">Days</span>
+                        </div>
+                    </div>
+                    <!-- Progress bar showing ticket sales -->
+                    <div class="card-progress">
+                        <div class="progress-label">
+                            <span>Tickets Sold</span>
+                            <span>78%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Small floating notification card -->
+                <div class="hero-card mini-card-1">
+                    <div class="mini-card-icon">🎉</div>
+                    <div class="mini-card-text">
+                        <strong>New Registration!</strong>
+                        <p>John just registered</p>
+                    </div>
+                </div>
+
+                <!-- Small floating success card -->
+                <div class="hero-card mini-card-2">
+                    <div class="mini-card-icon">✅</div>
+                    <div class="mini-card-text">
+                        <strong>Event Created</strong>
+                        <p>Music Fest 2025</p>
+                    </div>
+                </div>
+
+                <!-- Small stats card -->
+                <div class="hero-card mini-card-3">
+                    <span class="mini-stat">📈 +240%</span>
+                    <p>Growth this month</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Scroll down indicator -->
+        <div class="scroll-indicator">
+            <span>Scroll Down</span>
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         FEATURES SECTION
+         Shows what EventSphere can do
+         ============================================ -->
+    <section class="features-section" id="features">
+        
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header">
+                <span class="section-badge">Why Choose Us</span>
+                <h2 class="section-title">
+                    Everything you need to
+                    <span class="gradient-text">run amazing events</span>
+                </h2>
+                <p class="section-subtitle">
+                    Powerful features designed for modern event organizers
+                </p>
+            </div>
+
+            <!-- Features Grid - 6 feature cards -->
+            <div class="features-grid">
+
+                <!-- Feature Card 1 -->
+                <div class="feature-card" data-aos="fade-up" data-delay="0">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h3>Easy Event Creation</h3>
+                    <p>Create professional events in minutes. Upload images, set details, and publish instantly to your audience.</p>
+                    <div class="feature-hover-line"></div>
+                </div>
+
+                <!-- Feature Card 2 -->
+                <div class="feature-card" data-aos="fade-up" data-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>User Registration</h3>
+                    <p>Seamless registration system with Google login. Users can register for events with one click.</p>
+                    <div class="feature-hover-line"></div>
+                </div>
+
+                <!-- Feature Card 3 -->
+                <div class="feature-card" data-aos="fade-up" data-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email Confirmations</h3>
+                    <p>Automatic email confirmations sent to attendees with event details and unique registration ID.</p>
+                    <div class="feature-hover-line"></div>
+                </div>
+
+                <!-- Feature Card 4 -->
+                <div class="feature-card" data-aos="fade-up" data-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Live dashboard with registration counts, user statistics, and event performance metrics.</p>
+                    <div class="feature-hover-line"></div>
+                </div>
+
+                <!-- Feature Card 5 -->
+                <div class="feature-card" data-aos="fade-up" data-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Authentication</h3>
+                    <p>Firebase-powered Google authentication ensures secure and private user accounts.</p>
+                    <div class="feature-hover-line"></div>
+                </div>
+
+                <!-- Feature Card 6 -->
+                <div class="feature-card" data-aos="fade-up" data-delay="500">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Responsive</h3>
+                    <p>Perfectly optimized for all devices. Your events look stunning on mobile, tablet, and desktop.</p>
+                    <div class="feature-hover-line"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         HOW IT WORKS SECTION
+         Step by step process explanation
+         ============================================ -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+
+            <!-- Section Header -->
+            <div class="section-header">
+                <span class="section-badge">Simple Process</span>
+                <h2 class="section-title">
+                    How <span class="gradient-text">EventSphere</span> Works
+                </h2>
+            </div>
+
+            <!-- Steps Timeline -->
+            <div class="steps-container">
+
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <h3>Sign In</h3>
+                        <p>Login with your Google account in one click. No passwords needed.</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Browse Events</h3>
+                        <p>Explore hundreds of events filtered by category, date, and location.</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <h3>Register</h3>
+                        <p>Register for your chosen events with a single click and get instant confirmation.</p>
+                    </div>
+                    <div class="step-connector"></div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <div class="step-icon">
+                            <i class="fas fa-party-horn"></i>
+                        </div>
+                        <h3>Enjoy Event</h3>
+                        <p>Attend amazing events and create unforgettable memories with others.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         STATISTICS SECTION
+         Shows platform numbers and achievements
+         ============================================ -->
+    <section class="stats-section" id="stats">
+        
+        <!-- Animated background -->
+        <div class="stats-bg">
+            <div class="stats-gradient"></div>
+        </div>
+
+        <div class="container">
+
+            <!-- Section Header -->
+            <div class="section-header">
+                <span class="section-badge">Our Numbers</span>
+                <h2 class="section-title">
+                    Trusted by thousands of
+                    <span class="gradient-text">event creators</span>
+                </h2>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+
+                <!-- Stat 1 -->
+                <div class="stat-card">
+                    <div class="stat-icon">🎉</div>
+                    <!-- data-target is the number we count up to -->
+                    <div class="stat-number" data-target="500" id="stat-events">0</div>
+                    <div class="stat-suffix">+</div>
+                    <div class="stat-label">Events Created</div>
+                    <div class="stat-decoration"></div>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number" data-target="10000" id="stat-users">0</div>
+                    <div class="stat-suffix">+</div>
+                    <div class="stat-label">Happy Users</div>
+                    <div class="stat-decoration"></div>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-number" data-target="25000" id="stat-registrations">0</div>
+                    <div class="stat-suffix">+</div>
+                    <div class="stat-label">Registrations</div>
+                    <div class="stat-decoration"></div>
+                </div>
+
+                <!-- Stat 4 -->
+                <div class="stat-card">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-number" data-target="50" id="stat-cities">0</div>
+                    <div class="stat-suffix">+</div>
+                    <div class="stat-label">Cities Covered</div>
+                    <div class="stat-decoration"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         TESTIMONIALS SECTION
+         User reviews and feedback
+         ============================================ -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+
+            <!-- Section Header -->
+            <div class="section-header">
+                <span class="section-badge">Testimonials</span>
+                <h2 class="section-title">
+                    What our users <span class="gradient-text">say about us</span>
+                </h2>
+            </div>
+
+            <!-- Testimonials Grid -->
+            <div class="testimonials-grid">
+
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "EventSphere transformed how we manage our tech conferences. 
+                        The admin panel is incredibly intuitive!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍💼</div>
+                        <div class="author-info">
+                            <strong>Alex Johnson</strong>
+                            <span>Tech Conference Organizer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card featured">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "The real-time registration tracking and email confirmations 
+                        are game changers. Highly recommend EventSphere!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍🎨</div>
+                        <div class="author-info">
+                            <strong>Sarah Williams</strong>
+                            <span>Music Festival Director</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Simple, beautiful, and powerful. EventSphere is everything 
+                        we needed for our university events!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍🎓</div>
+                        <div class="author-info">
+                            <strong>Mike Chen</strong>
+                            <span>University Event Manager</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CALL TO ACTION SECTION
+         Final push to get users to sign up
+         ============================================ -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <div class="cta-card">
+                
+                <!-- Background decorations -->
+                <div class="cta-bg-decoration">
+                    <div class="cta-circle cta-circle-1"></div>
+                    <div class="cta-circle cta-circle-2"></div>
+                </div>
+
+                <div class="cta-content">
+                    <h2>Ready to create your first event?</h2>
+                    <p>Join thousands of event organizers who trust EventSphere</p>
+                    
+                    <div class="cta-buttons">
+                        <a href="login.html" class="btn-primary">
+                            <i class="fab fa-google"></i>
+                            Start with Google
+                            <span class="btn-glow"></span>
+                        </a>
+                        <a href="events.html" class="btn-outline">
+                            <i class="fas fa-eye"></i>
+                            Browse Events
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         Bottom section with links and info
+         ============================================ -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            
+            <!-- Footer Top - Logo and Links -->
+            <div class="footer-top">
+                
+                <!-- Footer Brand -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="logo-icon">⚡</span>
+                        <span class="logo-text">EventSphere</span>
+                    </div>
+                    <p class="footer-tagline">
+                        Making every event extraordinary. 
+                        Your premium event management platform.
+                    </p>
+                    <!-- Social Media Links -->
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer Links Column 1 -->
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="events.html">Browse Events</a></li>
+                        <li><a href="login.html">Create Account</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="admin.html">Admin Panel</a></li>
+                    </ul>
+                </div>
+
+                <!-- Footer Links Column 2 -->
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Footer Links Column 3 -->
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            hello@eventsphere.com
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            San Francisco, CA
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 000-0000
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom - Copyright -->
+            <div class="footer-bottom">
+                <p>&copy; 2025 EventSphere. All rights reserved. Built with ❤️ using Firebase</p>
+                <p class="footer-credits">Designed for college project presentation</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ============================================
+         BACK TO TOP BUTTON
+         Appears when user scrolls down
+         ============================================ -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ============================================
+         JAVASCRIPT FILES
+         Load JS at bottom so HTML loads first
+         ============================================ -->
+    
+    <!-- Firebase SDK from CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Our Firebase configuration file -->
+    <script src="js/firebase.js"></script>
+    
+    <!-- Authentication logic -->
+    <script src="js/auth.js"></script>
+    
+    <!-- Landing page specific scripts -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

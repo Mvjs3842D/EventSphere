@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - EventSphere</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- ============================================
+         NAVIGATION BAR (Same as index.html)
+         ============================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            
+            <div class="nav-logo">
+                <a href="index.html">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">EventSphere</span>
+                </a>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="events.html" class="nav-link active">Events</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="login.html" class="btn-nav-login" id="btn-login-nav">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                <a href="dashboard.html" class="btn-nav-dashboard hidden" id="btn-dashboard-nav">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </div>
+
+            <button class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- ============================================
+         EVENTS HERO/BANNER SECTION
+         Top section of events page
+         ============================================ -->
+    <section class="events-hero">
+        
+        <!-- Background gradient blobs -->
+        <div class="hero-bg">
+            <div class="gradient-blob blob-1"></div>
+            <div class="gradient-blob blob-2"></div>
+        </div>
+
+        <div class="container">
+            <div class="events-hero-content">
+                
+                <!-- Page title -->
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Live Events</span>
+                </div>
+                <h1>Discover Amazing <span class="gradient-text">Events</span></h1>
+                <p>Find and register for the best events in your area</p>
+
+                <!-- ============================================
+                     SEARCH BAR
+                     Users can type to search events
+                     JavaScript filters events on input
+                     ============================================ -->
+                <div class="events-search-bar">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" 
+                               id="event-search" 
+                               placeholder="Search events, venues, organizers..."
+                               class="search-input">
+                        <button class="search-clear" id="search-clear">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button class="btn-primary search-btn">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                </div>
+
+                <!-- Quick Category Buttons in hero -->
+                <div class="hero-categories">
+                    <span>Popular:</span>
+                    <button class="category-quick" data-category="technology">Technology</button>
+                    <button class="category-quick" data-category="music">Music</button>
+                    <button class="category-quick" data-category="sports">Sports</button>
+                    <button class="category-quick" data-category="art">Art</button>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ============================================
+         EVENTS MAIN SECTION
+         Contains filter sidebar + event cards grid
+         ============================================ -->
+    <section class="events-main-section">
+        <div class="container">
+            
+            <div class="events-layout">
+
+                <!-- ---- LEFT SIDEBAR: FILTERS ---- -->
+                <aside class="events-sidebar">
+                    
+                    <!-- Filter Header -->
+                    <div class="filter-header">
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                        <!-- Clear all filters button -->
+                        <button class="clear-filters" id="clear-filters">Clear All</button>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="filter-section">
+                        <h4 class="filter-title">Category</h4>
+                        <div class="filter-options">
+                            <!-- Each label wraps a radio input for category selection -->
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="all" checked>
+                                <span class="filter-custom-radio"></span>
+                                <span>All Categories</span>
+                                <!-- Count shown by JS -->
+                                <span class="filter-count" id="count-all">0</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="technology">
+                                <span class="filter-custom-radio"></span>
+                                <span>Technology</span>
+                                <span class="filter-count" id="count-technology">0</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="music">
+                                <span class="filter-custom-radio"></span>
+                                <span>Music</span>
+                                <span class="filter-count" id="count-music">0</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="sports">
+                                <span class="filter-custom-radio"></span>
+                                <span>Sports</span>
+                                <span class="filter-count" id="count-sports">0</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="art">
+                                <span class="filter-custom-radio"></span>
+                                <span>Art & Culture</span>
+                                <span class="filter-count" id="count-art">0</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="business">
+                                <span class="filter-custom-radio"></span>
+                                <span>Business</span>
+                                <span class="filter-count" id="count-business">0</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="category" value="education">
+                                <span class="filter-custom-radio"></span>
+                                <span>Education</span>
+                                <span class="filter-count" id="count-education">0</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Date Filter -->
+                    <div class="filter-section">
+                        <h4 class="filter-title">Date</h4>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="radio" name="date-filter" value="all" checked>
+                                <span class="filter-custom-radio"></span>
+                                <span>Any Date</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="date-filter" value="today">
+                                <span class="filter-custom-radio"></span>
+                                <span>Today</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="date-filter" value="week">
+                                <span class="filter-custom-radio"></span>
+                                <span>This Week</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="date-filter" value="month">
+                                <span class="filter-custom-radio"></span>
+                                <span>This Month</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sort Options -->
+                    <div class="filter-section">
+                        <h4 class="filter-title">Sort By</h4>
+                        <select class="filter-select" id="sort-events">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="name-az">Name A-Z</option>
+                            <option value="name-za">Name Z-A</option>
+                        </select>
+                    </div>
+
+                </aside>
+
+                <!-- ---- RIGHT MAIN CONTENT: EVENTS GRID ---- -->
+                <div class="events-content">
+
+                    <!-- Events Header with count and view toggle -->
+                    <div class="events-header">
+                        <div class="events-count">
+                            <!-- JavaScript updates this number -->
+                            <span id="events-count-text">Loading events...</span>
+                        </div>
+                        
+                        <!-- View Mode Buttons (Grid/List) -->
+                        <div class="view-toggle">
+                            <button class="view-btn active" id="grid-view-btn" aria-label="Grid view">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="view-btn" id="list-view-btn" aria-label="List view">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ============================================
+                         EVENTS GRID
+                         ALL EVENTS ARE LOADED HERE FROM FIREBASE
+                         JavaScript fetches events and creates cards
+                         ============================================ -->
+                    <div class="events-grid" id="events-grid">
+                        
+                        <!-- 
+                            LOADING SKELETON CARDS
+                            Show while Firebase fetches events
+                            JavaScript replaces these with real event cards
+                        -->
+                        <div class="skeleton-card">
+                            <div class="skeleton-img"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-line long"></div>
+                                <div class="skeleton-line medium"></div>
+                                <div class="skeleton-line short"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-img"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-line long"></div>
+                                <div class="skeleton-line medium"></div>
+                                <div class="skeleton-line short"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-card">
+                            <div class="skeleton-img"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-line long"></div>
+                                <div class="skeleton-line medium"></div>
+                                <div class="skeleton-line short"></div>
+                            </div>
+                        </div>
+
+                        <!-- 
+                            ACTUAL EVENT CARDS ARE ADDED HERE BY events.js
+                            Each card looks like:
+                            
+                            <div class="event-card">
+                                <div class="event-card-image">
+                                    <img src="[Firebase Storage URL]" alt="Event">
+                                    <span class="event-category-badge">Technology</span>
+                                </div>
+                                <div class="event-card-body">
+                                    <h3>Event Title</h3>
+                                    <p>Description...</p>
+                                    <div class="event-meta">
+                                        <span>📅 Date</span>
+                                        <span>📍 Venue</span>
+                                    </div>
+                                    <a href="event-details.html?id=EVENT_ID" class="btn-primary">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        -->
+
+                    </div>
+
+                    <!-- Empty State (shown when no events found) -->
+                    <div class="no-events-found hidden" id="no-events-found">
+                        <div class="empty-state-icon">🔍</div>
+                        <h3>No Events Found</h3>
+                        <p>Try adjusting your search or filter criteria</p>
+                        <button class="btn-primary" id="reset-search">
+                            <i class="fas fa-redo"></i>
+                            Reset Filters
+                        </button>
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div class="load-more-container" id="load-more-container">
+                        <button class="btn-outline" id="load-more-btn">
+                            <i class="fas fa-plus"></i>
+                            Load More Events
+                        </button>
+                    </div>
+
+                </div>
+                <!-- End events-content -->
+
+            </div>
+            <!-- End events-layout -->
+
+        </div>
+    </section>
+
+    <!-- Simple Footer -->
+    <footer class="footer-mini">
+        <p>&copy; 2025 EventSphere. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Our Scripts -->
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- Events page specific script - fetches all events from Firebase -->
+    <script src="js/events.js"></script>
+
+</body>
+</html>

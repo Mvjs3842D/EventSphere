@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EventSphere</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Dashboard specific CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body class="dashboard-body">
+
+    <!-- ============================================
+         LOADING OVERLAY
+         Shows while we fetch user data from Firebase
+         ============================================ -->
+    <div id="page-loader" class="page-loader">
+        <div class="loader-container">
+            <div class="loader-logo">
+                <span class="loader-icon">⚡</span>
+                <span class="loader-text">EventSphere</span>
+            </div>
+            <div class="loader-spinner"></div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         SIDEBAR NAVIGATION
+         Left side menu for dashboard
+         ============================================ -->
+    <aside class="sidebar" id="sidebar">
+        
+        <!-- Sidebar Logo -->
+        <div class="sidebar-logo">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">EventSphere</span>
+        </div>
+
+        <!-- User Mini Profile in Sidebar -->
+        <div class="sidebar-user">
+            <!-- Profile image loaded from Firebase -->
+            <img id="sidebar-avatar" 
+                 src="assets/icons/default-avatar.png" 
+                 alt="User Avatar" 
+                 class="sidebar-avatar">
+            <div class="sidebar-user-info">
+                <span id="sidebar-name" class="sidebar-name">Loading...</span>
+                <span class="sidebar-role">Member</span>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu Links -->
+        <nav class="sidebar-nav">
+            <ul class="sidebar-menu">
+                
+                <!-- Overview Tab -->
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link active" data-tab="overview">
+                        <i class="fas fa-home"></i>
+                        <span>Overview</span>
+                    </a>
+                </li>
+
+                <!-- My Events Tab -->
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-tab="my-events">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>My Events</span>
+                        <!-- Badge showing count -->
+                        <span class="sidebar-badge" id="event-count-badge">0</span>
+                    </a>
+                </li>
+
+                <!-- Profile Tab -->
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-tab="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+
+                <!-- Browse Events Link -->
+                <li class="sidebar-item">
+                    <a href="events.html" class="sidebar-link">
+                        <i class="fas fa-search"></i>
+                        <span>Browse Events</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <li class="sidebar-divider"></li>
+
+                <!-- Logout -->
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link sidebar-logout" id="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </aside>
+
+    <!-- ============================================
+         MAIN DASHBOARD CONTENT
+         Right side content area
+         ============================================ -->
+    <main class="dashboard-main" id="dashboard-main">
+
+        <!-- ---- TOP HEADER BAR ---- -->
+        <header class="dashboard-header">
+            
+            <!-- Mobile menu toggle button -->
+            <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Page Title (changes based on active tab) -->
+            <div class="header-title">
+                <h1 id="page-title">Overview</h1>
+                <p id="page-subtitle">Welcome back! Here's what's happening.</p>
+            </div>
+
+            <!-- Header Right - Search and Profile -->
+            <div class="header-right">
+                
+                <!-- Search Bar -->
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search events..." id="header-search-input">
+                </div>
+
+                <!-- Notification Bell -->
+                <button class="header-notification" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+                <!-- User Avatar (clickable) -->
+                <div class="header-avatar-wrapper">
+                    <img id="header-avatar" 
+                         src="assets/icons/default-avatar.png" 
+                         alt="User" 
+                         class="header-avatar">
+                </div>
+
+            </div>
+        </header>
+
+        <!-- ---- DASHBOARD CONTENT AREA ---- -->
+        <div class="dashboard-content">
+
+            <!-- ==========================================
+                 TAB 1: OVERVIEW TAB
+                 Shows when user clicks "Overview"
+                 ========================================== -->
+            <div class="tab-content active" id="tab-overview">
+
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h2>Good day, <span id="welcome-name">User</span>! 👋</h2>
+                        <p>Here's your event activity summary</p>
+                    </div>
+                    <div class="welcome-image">🎉</div>
+                </div>
+
+                <!-- Quick Stats Cards Row -->
+                <div class="stats-row">
+
+                    <!-- Stat Card 1 - Total Registered Events -->
+                    <div class="dash-stat-card">
+                        <div class="dash-stat-icon blue">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="dash-stat-info">
+                            <span class="dash-stat-number" id="total-registered">0</span>
+                            <span class="dash-stat-label">Events Registered</span>
+                        </div>
+                        <div class="dash-stat-change positive">
+                            <i class="fas fa-arrow-up"></i> Active
+                        </div>
+                    </div>
+
+                    <!-- Stat Card 2 - Upcoming Events -->
+                    <div class="dash-stat-card">
+                        <div class="dash-stat-icon purple">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="dash-stat-info">
+                            <span class="dash-stat-number" id="upcoming-count">0</span>
+                            <span class="dash-stat-label">Upcoming Events</span>
+                        </div>
+                        <div class="dash-stat-change positive">
+                            <i class="fas fa-calendar"></i> Soon
+                        </div>
+                    </div>
+
+                    <!-- Stat Card 3 - Past Events Attended -->
+                    <div class="dash-stat-card">
+                        <div class="dash-stat-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="dash-stat-info">
+                            <span class="dash-stat-number" id="attended-count">0</span>
+                            <span class="dash-stat-label">Events Attended</span>
+                        </div>
+                        <div class="dash-stat-change">
+                            <i class="fas fa-history"></i> Total
+                        </div>
+                    </div>
+
+                    <!-- Stat Card 4 - Profile Completion -->
+                    <div class="dash-stat-card">
+                        <div class="dash-stat-icon orange">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="dash-stat-info">
+                            <span class="dash-stat-number" id="profile-complete">0%</span>
+                            <span class="dash-stat-label">Profile Complete</span>
+                        </div>
+                        <div class="dash-stat-change">
+                            <i class="fas fa-edit"></i> Update
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Two Column Layout for Overview -->
+                <div class="overview-grid">
+
+                    <!-- Left Column: Upcoming Events List -->
+                    <div class="overview-card">
+                        <div class="card-header-flex">
+                            <h3><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
+                            <a href="#" class="card-link" data-tab-link="my-events">View All</a>
+                        </div>
+                        
+                        <!-- Events list - filled by JavaScript -->
+                        <div class="upcoming-events-list" id="upcoming-events-list">
+                            <!-- Loading state -->
+                            <div class="list-loading">
+                                <div class="mini-spinner"></div>
+                                <p>Loading your events...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Quick Actions and Activity -->
+                    <div class="overview-right">
+
+                        <!-- Quick Actions Card -->
+                        <div class="overview-card quick-actions">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                            <div class="action-buttons">
+                                <a href="events.html" class="action-btn">
+                                    <i class="fas fa-search"></i>
+                                    <span>Browse Events</span>
+                                </a>
+                                <a href="#" class="action-btn" data-tab-link="profile">
+                                    <i class="fas fa-user-edit"></i>
+                                    <span>Edit Profile</span>
+                                </a>
+                                <a href="#" class="action-btn" data-tab-link="my-events">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span>My Tickets</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity Card -->
+                        <div class="overview-card activity-card">
+                            <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                            <div class="activity-list" id="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-dot"></div>
+                                    <div class="activity-text">
+                                        <p>Loading activity...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ==========================================
+                 TAB 2: MY EVENTS TAB
+                 Shows registered events with details
+                 ========================================== -->
+            <div class="tab-content hidden" id="tab-my-events">
+
+                <!-- Tab Header -->
+                <div class="tab-header">
+                    <h2>My Registered Events</h2>
+                    <p>All events you have registered for</p>
+                </div>
+
+                <!-- Filter buttons for events -->
+                <div class="event-filters">
+                    <button class="filter-pill active" data-filter="all">All Events</button>
+                    <button class="filter-pill" data-filter="upcoming">Upcoming</button>
+                    <button class="filter-pill" data-filter="past">Past Events</button>
+                </div>
+
+                <!-- ============================================
+                     MY EVENTS GRID
+                     JavaScript will add event cards here
+                     ============================================ -->
+                <div class="my-events-grid" id="my-events-grid">
+                    <!-- Loading state shown first -->
+                    <div class="loading-state" id="events-loading">
+                        <div class="loader-spinner"></div>
+                        <p>Fetching your events from database...</p>
+                    </div>
+
+                    <!-- Empty state shown if no events -->
+                    <div class="empty-state hidden" id="events-empty">
+                        <div class="empty-icon">📅</div>
+                        <h3>No Events Yet</h3>
+                        <p>You haven't registered for any events yet.</p>
+                        <a href="events.html" class="btn-primary">
+                            <i class="fas fa-search"></i>
+                            Browse Events
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ==========================================
+                 TAB 3: PROFILE TAB
+                 User profile with editable fields
+                 ========================================== -->
+            <div class="tab-content hidden" id="tab-profile">
+
+                <!-- Tab Header -->
+                <div class="tab-header">
+                    <h2>My Profile</h2>
+                    <p>Manage your personal information</p>
+                </div>
+
+                <div class="profile-layout">
+
+                    <!-- Left: Profile Card -->
+                    <div class="profile-card">
+                        
+                        <!-- Profile Image Section -->
+                        <div class="profile-image-section">
+                            <div class="profile-img-wrapper">
+                                <!-- Image from Firebase/Google -->
+                                <img id="profile-avatar" 
+                                     src="assets/icons/default-avatar.png" 
+                                     alt="Profile" 
+                                     class="profile-img">
+                                <!-- Verified badge -->
+                                <div class="profile-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            <h3 id="profile-name">Loading...</h3>
+                            <p id="profile-email" class="profile-email">loading@email.com</p>
+                            <span class="profile-member-badge">
+                                <i class="fas fa-star"></i> Member
+                            </span>
+                        </div>
+
+                        <!-- Profile Stats -->
+                        <div class="profile-mini-stats">
+                            <div class="mini-stat-item">
+                                <span id="p-events-count" class="mini-stat-number">0</span>
+                                <span class="mini-stat-label">Events</span>
+                            </div>
+                            <div class="mini-stat-divider"></div>
+                            <div class="mini-stat-item">
+                                <span class="mini-stat-number">⭐</span>
+                                <span class="mini-stat-label">Member</span>
+                            </div>
+                            <div class="mini-stat-divider"></div>
+                            <div class="mini-stat-item">
+                                <span class="mini-stat-number">🏆</span>
+                                <span class="mini-stat-label">Active</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Edit Profile Form -->
+                    <div class="profile-form-card">
+                        
+                        <div class="form-card-header">
+                            <h3>Edit Profile</h3>
+                            <p>Update your personal information</p>
+                        </div>
+
+                        <!-- ============================================
+                             PROFILE EDIT FORM
+                             Name and email are readonly (from Google)
+                             Phone and bio are editable
+                             ============================================ -->
+                        <form id="profile-form" class="profile-form">
+
+                            <!-- Full Name (readonly - from Google) -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-user"></i>
+                                    Full Name
+                                    <span class="field-note">(from Google account)</span>
+                                </label>
+                                <input type="text" 
+                                       id="profile-name-input" 
+                                       class="form-input readonly" 
+                                       placeholder="Your name"
+                                       readonly>
+                            </div>
+
+                            <!-- Email (readonly - from Google) -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-envelope"></i>
+                                    Email Address
+                                    <span class="field-note">(from Google account)</span>
+                                </label>
+                                <input type="email" 
+                                       id="profile-email-input" 
+                                       class="form-input readonly" 
+                                       placeholder="your@email.com"
+                                       readonly>
+                            </div>
+
+                            <!-- Phone Number (EDITABLE) -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-phone"></i>
+                                    Phone Number
+                                    <span class="field-note">(editable)</span>
+                                </label>
+                                <input type="tel" 
+                                       id="profile-phone" 
+                                       class="form-input" 
+                                       placeholder="+1 (555) 000-0000">
+                            </div>
+
+                            <!-- Bio (EDITABLE) -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-pen"></i>
+                                    Bio
+                                    <span class="field-note">(editable)</span>
+                                </label>
+                                <textarea id="profile-bio" 
+                                          class="form-textarea" 
+                                          placeholder="Tell us about yourself..."
+                                          rows="4"></textarea>
+                            </div>
+
+                            <!-- Save Button -->
+                            <button type="submit" class="btn-primary form-submit">
+                                <i class="fas fa-save"></i>
+                                Save Changes
+                            </button>
+
+                            <!-- Success message after saving -->
+                            <div class="form-success hidden" id="profile-save-success">
+                                <i class="fas fa-check-circle"></i>
+                                Profile updated successfully!
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- End dashboard-content -->
+
+    </main>
+    <!-- End dashboard-main -->
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Our Scripts -->
+    <script src="js/firebase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+</html>
